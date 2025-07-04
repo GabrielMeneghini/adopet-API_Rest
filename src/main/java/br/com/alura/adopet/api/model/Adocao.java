@@ -17,14 +17,10 @@ public class Adocao {
 
     private LocalDateTime data;
 
-    @ManyToOne
-    @JsonBackReference("tutor_adocoes")
-    @JoinColumn(name = "tutor_id")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Tutor tutor;
 
-    @OneToOne
-    @JoinColumn(name = "pet_id")
-    @JsonManagedReference("adocao_pets")
+    @OneToOne(fetch = FetchType.LAZY)
     private Pet pet;
 
     private String motivo;
