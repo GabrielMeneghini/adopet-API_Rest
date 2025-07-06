@@ -12,7 +12,6 @@ import br.com.alura.adopet.api.validacoes.adocao.solitacao.ValidacaoSolitacaoAdo
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -38,11 +37,10 @@ public class AdocaoService {
         var tutor = tutorRepository.getReferenceById(adocaoSolicitacaoDto.idtutor());
         var pet = petRepository.getReferenceById(adocaoSolicitacaoDto.idPet());
         var adocao = new Adocao(tutor, pet, adocaoSolicitacaoDto.motivo());
+        tutor.getAdocoes().add(adocao);
 
         validacoes.forEach(v -> v.validar(adocao));
 
-        adocao.setData(LocalDateTime.now());
-        adocao.setStatus(StatusAdocao.AGUARDANDO_AVALIACAO);
         adocaoRepository.save(adocao);
 
         emailService.enviarEmail(adocao.getPet().getAbrigo().getEmail(),
@@ -55,7 +53,7 @@ public class AdocaoService {
     public void aprovar(AdocaoAprovacaoDto adocaoAprovacaoDto) {
         var adocao = adocaoRepository.getReferenceById(adocaoAprovacaoDto.idAdocao());
 
-        adocao.setStatus(StatusAdocao.APROVADO);
+        adocao.marcarComoAprovado();
 
         emailService.enviarEmail(adocao.getTutor().getEmail(),
                 "Adoção aprovada",
@@ -65,8 +63,7 @@ public class AdocaoService {
     public void reprovar(AdocaoReprovacaoDto adocaoReprovacaoDto) {
         var adocao = adocaoRepository.getReferenceById(adocaoReprovacaoDto.idAdocao());
 
-        adocao.setStatus(StatusAdocao.REPROVADO);
-        adocao.setJustificativaStatus(adocaoReprovacaoDto.justificativa());
+        adocao.marcarComoReprovado(adocaoReprovacaoDto.justificativa());
 
         emailService.enviarEmail(adocao.getTutor().getEmail(),
                 "Adoção reprovada",
