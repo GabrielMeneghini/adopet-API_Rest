@@ -3,7 +3,6 @@ package br.com.alura.adopet.api.controller;
 import br.com.alura.adopet.api.dtos.AbrigoCadastroDto;
 import br.com.alura.adopet.api.dtos.AbrigoDetalhamentoDto;
 import br.com.alura.adopet.api.dtos.PetCadastroDto;
-import br.com.alura.adopet.api.repository.AbrigoRepository;
 import br.com.alura.adopet.api.service.AbrigoService;
 import br.com.alura.adopet.api.validacoes.ValidacaoException;
 import jakarta.persistence.EntityNotFoundException;
@@ -23,16 +22,15 @@ public class AbrigoController {
     private AbrigoService abrigoService;
 
     @GetMapping
-    public ResponseEntity<List<AbrigoDetalhamentoDto>> listar() {
-        return ResponseEntity.ok(abrigoService.listar());
+    public ResponseEntity<List<AbrigoDetalhamentoDto>> listarAbrigos() {
+        return ResponseEntity.ok(abrigoService.listarAbrigos());
     }
 
-    // Methods
     @PostMapping
     @Transactional
     public ResponseEntity<String> cadastrarAbrigo(@RequestBody @Valid AbrigoCadastroDto dto) {
         try {
-            abrigoService.cadastar(dto);
+            abrigoService.cadastrar(dto);
             return ResponseEntity.ok("Abrigo cadastrado com sucesso");
         } catch (ValidacaoException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

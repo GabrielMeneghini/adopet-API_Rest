@@ -46,7 +46,7 @@ public class AdocaoController {
     public ResponseEntity<String> reprovar(@RequestBody @Valid AdocaoReprovacaoDto adocaoReprovacaoDto) {
         try {
             adocaoService.reprovar(adocaoReprovacaoDto);
-            return ResponseEntity.ok("Adoção aprovada.");
+            return ResponseEntity.ok("Sua adoção foi reprovada. Justificativa: " + adocaoReprovacaoDto.justificativa());
         } catch(ValidacaoException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

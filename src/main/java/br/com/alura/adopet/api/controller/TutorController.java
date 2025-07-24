@@ -2,8 +2,6 @@ package br.com.alura.adopet.api.controller;
 
 import br.com.alura.adopet.api.dtos.TutorAtualizacaoDto;
 import br.com.alura.adopet.api.dtos.TutorCadastroDto;
-import br.com.alura.adopet.api.model.Tutor;
-import br.com.alura.adopet.api.repository.TutorRepository;
 import br.com.alura.adopet.api.service.TutorService;
 import br.com.alura.adopet.api.validacoes.ValidacaoException;
 import jakarta.validation.Valid;

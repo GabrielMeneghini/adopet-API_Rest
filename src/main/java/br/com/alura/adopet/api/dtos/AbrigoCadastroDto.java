@@ -3,7 +3,6 @@ package br.com.alura.adopet.api.dtos;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import org.hibernate.validator.constraints.UniqueElements;
 
 public record AbrigoCadastroDto(@NotBlank
                                 String nome,

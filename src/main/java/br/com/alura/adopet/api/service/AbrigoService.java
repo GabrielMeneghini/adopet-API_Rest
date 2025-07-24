@@ -28,18 +28,11 @@ public class AbrigoService {
     @Autowired
     private List<ValidacaoCadastroAbrigo> validacoes;
 
-    public List<AbrigoDetalhamentoDto> listar() {
-        var abrigos = abrigoRepository.findAll();
-        List<AbrigoDetalhamentoDto> abrigosDto = new ArrayList<>();
-
-        for(Abrigo a: abrigos) {
-            abrigosDto.add(new AbrigoDetalhamentoDto(a.getId(), a.getNome(), a.getEmail(), a.getTelefone()));
-        }
-
-        return abrigosDto;
+    public List<AbrigoDetalhamentoDto> listarAbrigos() {
+        return abrigoRepository.findAll().stream().map(AbrigoDetalhamentoDto::new).toList();
     }
 
-    public void cadastar(AbrigoCadastroDto dto) {
+    public void cadastrar(AbrigoCadastroDto dto) {
         var abrigo = new Abrigo(dto.nome(), dto.email(), dto.telefone());
 
         validacoes.forEach(v -> v.validar(abrigo));
@@ -48,33 +41,29 @@ public class AbrigoService {
     }
 
     public List<PetDetalhamentoDto> listarPets(String idOuNome) {
-        List<Pet> pets = encontarAbrigoPorIdOuNome(idOuNome).getPets();
+        List<Pet> pets = encontrarAbrigoPorIdOuNome(idOuNome).getPets();
         if(pets.isEmpty()) {
             throw new ValidacaoException("Não há pets no abrigo informado.");
         }
 
-        List<PetDetalhamentoDto> petsDto = new ArrayList<>();
-        for(Pet p: pets) {
-            petsDto.add(new PetDetalhamentoDto(p));
-        }
-
-        return petsDto;
+        return pets.stream().map(p -> new PetDetalhamentoDto(p)).toList();
     }
 
     public void cadastrarPet(String idOuNome, PetCadastroDto dto) {
-        var abrigo = encontarAbrigoPorIdOuNome(idOuNome);
+        var abrigo = encontrarAbrigoPorIdOuNome(idOuNome);
         Pet pet = new Pet(dto, abrigo);
         abrigo.getPets().add(pet);
         petRepository.save(pet);
     }
 
-    private Abrigo encontarAbrigoPorIdOuNome(String idOuNome) {
+    private Abrigo encontrarAbrigoPorIdOuNome(String idOuNome) {
         if(idOuNome.matches("\\d+")) {
             Long id = Long.parseLong(idOuNome);
-            return abrigoRepository.getReferenceById(id);
+            return abrigoRepository.findById(id).orElseThrow(() -> new ValidacaoException("Abrigo com id: " + idOuNome + " não encontrado."));
         } else {
             String nomeAbrigo = idOuNome;
-            return abrigoRepository.findByNome(nomeAbrigo);
+            return abrigoRepository.findByNome(nomeAbrigo).orElseThrow(() -> new ValidacaoException("Abrigo " + nomeAbrigo + " não encontrado."));
         }
     }
+
 }

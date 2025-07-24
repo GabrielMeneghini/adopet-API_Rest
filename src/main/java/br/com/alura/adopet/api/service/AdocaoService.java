@@ -4,7 +4,6 @@ import br.com.alura.adopet.api.dtos.AdocaoAprovacaoDto;
 import br.com.alura.adopet.api.dtos.AdocaoReprovacaoDto;
 import br.com.alura.adopet.api.dtos.AdocaoSolicitacaoDto;
 import br.com.alura.adopet.api.model.Adocao;
-import br.com.alura.adopet.api.model.StatusAdocao;
 import br.com.alura.adopet.api.repository.AdocaoRepository;
 import br.com.alura.adopet.api.repository.PetRepository;
 import br.com.alura.adopet.api.repository.TutorRepository;
@@ -33,10 +32,10 @@ public class AdocaoService {
     @Autowired
     private List<ValidacaoSolitacaoAdocao> validacoes;
 
-    public void solicitar(AdocaoSolicitacaoDto adocaoSolicitacaoDto) {
-        var tutor = tutorRepository.getReferenceById(adocaoSolicitacaoDto.idtutor());
-        var pet = petRepository.getReferenceById(adocaoSolicitacaoDto.idPet());
-        var adocao = new Adocao(tutor, pet, adocaoSolicitacaoDto.motivo());
+    public void solicitar(AdocaoSolicitacaoDto dto) {
+        var tutor = tutorRepository.getReferenceById(dto.idTutor());
+        var pet = petRepository.getReferenceById(dto.idPet());
+        var adocao = new Adocao(tutor, pet, dto.motivo());
         tutor.getAdocoes().add(adocao);
 
         validacoes.forEach(v -> v.validar(adocao));
@@ -54,6 +53,7 @@ public class AdocaoService {
         var adocao = adocaoRepository.getReferenceById(adocaoAprovacaoDto.idAdocao());
 
         adocao.marcarComoAprovado();
+        adocao.getPet().marcarComoAdotado();
 
         emailService.enviarEmail(adocao.getTutor().getEmail(),
                 "Adoção aprovada",
@@ -74,3 +74,4 @@ public class AdocaoService {
     }
 
 }
+

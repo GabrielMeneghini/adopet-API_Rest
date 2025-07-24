@@ -9,7 +9,5 @@ public record PetCadastroDto(@NotNull TipoPet tipo,
                              @NotBlank String raca,
                              @NotNull Integer idade,
                              @NotBlank String cor,
-                             Float peso,
-                             @NotNull Long abrigoId
-                             ) {
+                             Float peso                             ) {
 }
