@@ -55,7 +55,6 @@ class AdocaoControllerTest {
         // Assert
         Assertions.assertEquals(400, response.getStatus());
     }
-
     @Test
     @DisplayName("Deve devolver código 200 para solicitação sem erros")
     void solicitarCenario02() throws Exception {
@@ -90,7 +89,6 @@ class AdocaoControllerTest {
         // Assert
         Assertions.assertEquals(400, response.getStatus());
     }
-
     @Test
     @DisplayName("Deve devolver código 200 para aprovação sem erros no json")
     void aprovarCenario02() throws Exception {
@@ -125,7 +123,6 @@ class AdocaoControllerTest {
         // Assert
         Assertions.assertEquals(400, response.getStatus());
     }
-
     @Test
     @DisplayName("Deve devolver código 200 para reprovação sem erros no json")
     void reprovarCenario02() throws Exception {

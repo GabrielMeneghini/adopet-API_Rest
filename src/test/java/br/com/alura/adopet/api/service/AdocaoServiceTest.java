@@ -11,9 +11,7 @@ import br.com.alura.adopet.api.repository.AdocaoRepository;
 import br.com.alura.adopet.api.repository.PetRepository;
 import br.com.alura.adopet.api.repository.TutorRepository;
 import br.com.alura.adopet.api.validacoes.adocao.solitacao.ValidacaoSolitacaoAdocao;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -71,11 +69,15 @@ class AdocaoServiceTest {
         @Mock
         private ValidacaoSolitacaoAdocao validador4;
 
+    @BeforeEach
+    void setUp() {
+        adocaoSolicitacaoDto = new AdocaoSolicitacaoDto(10L, 20L, "Motivo teste");
+    }
+
     @Test
     @DisplayName("Deve salvar adoção se dados forem corretos")
     void solicitar01() {
         //Arrange
-        this.adocaoSolicitacaoDto = new AdocaoSolicitacaoDto(10L, 20L, "Motivo teste");
         BDDMockito.given(tutorRepository.getReferenceById(adocaoSolicitacaoDto.idTutor())).willReturn(tutor);
         BDDMockito.given(petRepository.getReferenceById(adocaoSolicitacaoDto.idPet())).willReturn(pet);
         BDDMockito.given(pet.getAbrigo()).willReturn(abrigo);
@@ -94,7 +96,6 @@ class AdocaoServiceTest {
     @DisplayName("Deve chamar validadores de adoção ao solicitar")
     void solicitar02() {
         //Arrange
-        this.adocaoSolicitacaoDto = new AdocaoSolicitacaoDto(10L, 20L, "Motivo teste");
         BDDMockito.given(tutorRepository.getReferenceById(adocaoSolicitacaoDto.idTutor())).willReturn(tutor);
         BDDMockito.given(petRepository.getReferenceById(adocaoSolicitacaoDto.idPet())).willReturn(pet);
         BDDMockito.given(pet.getAbrigo()).willReturn(abrigo);
@@ -114,7 +115,6 @@ class AdocaoServiceTest {
     @Test
     @DisplayName("Deve enviar EMAIL de SOLICITAÇÃO")
     void solicitar03() {
-        this.adocaoSolicitacaoDto = new AdocaoSolicitacaoDto(10L, 20L, "Motivo teste");
         BDDMockito.given(tutorRepository.getReferenceById(adocaoSolicitacaoDto.idTutor())).willReturn(tutor);
         BDDMockito.given(petRepository.getReferenceById(adocaoSolicitacaoDto.idPet())).willReturn(pet);
         BDDMockito.given(pet.getAbrigo()).willReturn(abrigo);
@@ -127,7 +127,6 @@ class AdocaoServiceTest {
     @Test
     @DisplayName("Deve adicionar a nova ADOÇÃO a lista de adoções do TUTOR")
     void solicitar04() {
-        this.adocaoSolicitacaoDto = new AdocaoSolicitacaoDto(10L, 20L, "Motivo teste");
         BDDMockito.given(tutorRepository.getReferenceById(adocaoSolicitacaoDto.idTutor())).willReturn(tutor);
         BDDMockito.given(petRepository.getReferenceById(adocaoSolicitacaoDto.idPet())).willReturn(pet);
         BDDMockito.given(pet.getAbrigo()).willReturn(abrigo);

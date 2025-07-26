@@ -35,7 +35,7 @@ class PetServiceTest {
         Assertions.assertThrows(ValidacaoException.class, () -> petService.listarPetsDisponiveis());
     }
     @Test
-    @DisplayName("Deve retorna lista de pets disponíveis")
+    @DisplayName("Deve retornar lista de pets disponíveis")
     void listarPetsDisponiveis02() {
         var pet1 = Mockito.mock(Pet.class);
         var pet2  = Mockito.mock(Pet.class);
