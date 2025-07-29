@@ -10,6 +10,7 @@ import br.com.alura.adopet.api.repository.AbrigoRepository;
 import br.com.alura.adopet.api.repository.PetRepository;
 import br.com.alura.adopet.api.validacoes.ValidacaoException;
 import br.com.alura.adopet.api.validacoes.abrigo.cadastro.ValidacaoCadastroAbrigo;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -118,7 +119,7 @@ class AbrigoServiceTest {
         Long id = 1L;
         BDDMockito.given(abrigoRepository.findById(id)).willReturn(Optional.empty());
 
-        Assertions.assertThrows(ValidacaoException.class, () -> abrigoService.listarPets(idOuNome));
+        Assertions.assertThrows(EntityNotFoundException.class, () -> abrigoService.listarPets(idOuNome));
     }
     @Test
     @DisplayName("Deve lançar exceção se NOME do abrigo não existir")
@@ -126,7 +127,7 @@ class AbrigoServiceTest {
         String idOuNome = "nomeTeste";
         BDDMockito.given(abrigoRepository.findByNome(idOuNome)).willReturn(Optional.empty());
 
-        Assertions.assertThrows(ValidacaoException.class, () -> abrigoService.listarPets(idOuNome));
+        Assertions.assertThrows(EntityNotFoundException.class, () -> abrigoService.listarPets(idOuNome));
     }
 
     @Test
