@@ -10,6 +10,7 @@ import br.com.alura.adopet.api.repository.AbrigoRepository;
 import br.com.alura.adopet.api.repository.PetRepository;
 import br.com.alura.adopet.api.validacoes.ValidacaoException;
 import br.com.alura.adopet.api.validacoes.abrigo.cadastro.ValidacaoCadastroAbrigo;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +22,8 @@ public class AbrigoService {
 
     @Autowired
     private AbrigoRepository abrigoRepository;
-
     @Autowired
     private PetRepository petRepository;
-
     @Autowired
     private List<ValidacaoCadastroAbrigo> validacoes;
 
@@ -59,10 +58,10 @@ public class AbrigoService {
     private Abrigo encontrarAbrigoPorIdOuNome(String idOuNome) {
         if(idOuNome.matches("\\d+")) {
             Long id = Long.parseLong(idOuNome);
-            return abrigoRepository.findById(id).orElseThrow(() -> new ValidacaoException("Abrigo com id: " + idOuNome + " não encontrado."));
+            return abrigoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Abrigo com id: " + idOuNome + " não encontrado."));
         } else {
             String nomeAbrigo = idOuNome;
-            return abrigoRepository.findByNome(nomeAbrigo).orElseThrow(() -> new ValidacaoException("Abrigo " + nomeAbrigo + " não encontrado."));
+            return abrigoRepository.findByNome(nomeAbrigo).orElseThrow(() -> new EntityNotFoundException("Abrigo " + nomeAbrigo + " não encontrado."));
         }
     }
 

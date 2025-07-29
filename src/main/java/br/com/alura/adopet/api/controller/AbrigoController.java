@@ -8,6 +8,7 @@ import br.com.alura.adopet.api.validacoes.ValidacaoException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +23,16 @@ public class AbrigoController {
     private AbrigoService abrigoService;
 
     @GetMapping
-    public ResponseEntity<List<AbrigoDetalhamentoDto>> listarAbrigos() {
-        return ResponseEntity.ok(abrigoService.listarAbrigos());
+    public ResponseEntity listarAbrigos() {
+        try {
+            var abrigos = abrigoService.listarAbrigos();
+            if (abrigos.isEmpty()) {
+                throw new ValidacaoException("Não há abrigos cadastrados.");
+            }
+            return ResponseEntity.ok(abrigos);
+        } catch(ValidacaoException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping
@@ -41,8 +50,10 @@ public class AbrigoController {
     public ResponseEntity<?> listarPets(@PathVariable String idOuNome) {
         try {
             return ResponseEntity.ok(abrigoService.listarPets(idOuNome));
-        } catch(EntityNotFoundException | ValidacaoException e) {
+        } catch(ValidacaoException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Abrigo não encontrado.");
         }
     }
 
@@ -54,7 +65,7 @@ public class AbrigoController {
 
             return ResponseEntity.ok("Pet cadastrado com sucesso");
         } catch (EntityNotFoundException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
