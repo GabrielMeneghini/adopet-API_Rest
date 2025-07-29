@@ -1,7 +1,6 @@
 package br.com.alura.adopet.api.controller;
 
 import br.com.alura.adopet.api.dtos.AbrigoCadastroDto;
-import br.com.alura.adopet.api.dtos.AbrigoDetalhamentoDto;
 import br.com.alura.adopet.api.dtos.PetCadastroDto;
 import br.com.alura.adopet.api.service.AbrigoService;
 import br.com.alura.adopet.api.validacoes.ValidacaoException;
@@ -12,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/abrigos")
